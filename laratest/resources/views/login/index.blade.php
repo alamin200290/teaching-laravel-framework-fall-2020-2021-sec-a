@@ -23,6 +23,10 @@
 			</tr>
 		</table>
 		</fieldset>
+
+		<h3 style="color: red">
+			{{session('msg')}}
+		</h3>
 	</form>
 </body>
 </html>
