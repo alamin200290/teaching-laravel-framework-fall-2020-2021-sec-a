@@ -23,18 +23,21 @@ Route::get('/logout', 'logoutController@index');
 
 Route::group(['middleware'=>['sess']], function(){
 
-	Route::get('/home', 'homeController@index')->middleware('sess');
-	Route::get('/create', 'homeController@create');
-	Route::post('/create', 'homeController@store');
-
-	//Route::get('/userlist', 'homeController@userlist');
-	Route::get('/userlist', ['uses'=> 'homeController@userlist']);
-
+	Route::get('/home', 'homeController@index')->middleware('sess')->name('home.index');
+	//Route::get('/userlist', 'homeController@userlist')->name('home.userlist');
+	Route::get('/userlist', ['uses'=> 'homeController@userlist', 'as'=>'home.userlist']);
 	Route::get('/details/{id}', 'homeController@show');
-	Route::get('/edit/{id}', 'homeController@edit');
-	Route::post('/edit/{id}', 'homeController@update');
-	Route::get('/delete/{id}', 'homeController@delete');
-	Route::post('/delete/{id}', 'homeController@destroy');
+
+
+	Route::group(['middleware'=>['type']], function(){
+		Route::get('/create', 'homeController@create')->name('home.create');
+		Route::post('/create', 'homeController@store');
+		Route::get('/user/edit/{id}', 'homeController@edit')->name('home.edit');
+		Route::post('/user/edit/{id}', 'homeController@update');
+		Route::get('/delete/{id}', 'homeController@delete');
+		Route::post('/delete/{id}', 'homeController@destroy');
+	});
+	
 });
 
 

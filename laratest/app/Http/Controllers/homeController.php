@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
+use Validator;
 
 class homeController extends Controller
 {
@@ -24,8 +26,6 @@ class homeController extends Controller
     	$v->withName('alamin');
    		return $v;*/
 
-
-
         $id = 123;
         $name = $req->session()->get('username');
         return view('home.index', compact('id', 'name'));
@@ -33,12 +33,42 @@ class homeController extends Controller
     }
 
     public function create(){
-        //
-        //return view('home.create');
+        return view('home.create');
     }
 
-    public function store(){
-        ///
+    public function store(UserRequest $req){
+        
+       /* $validation = Validator::make($req->all(), [
+            'name' => 'required|min:3',
+            'email'=> 'required',
+            'cgpa' => 'required'
+        ]);
+
+        if($validation->fails()){
+            return redirect()
+                    ->route('home.create')
+                    ->with('errors', $validation->errors())
+                    ->withInput();
+
+            return back()
+                    ->with('errors', $validation->errors())
+                    ->withInput();
+        }*/
+
+
+       /* $this->validate($req, [
+            'name' => 'required|min:3',
+            'email'=> 'required',
+            'cgpa' => 'required'
+        ])->validate();*/
+
+
+        /*$req->validate([
+            'name' => 'required|min:3',
+            'email'=> 'required',
+            'cgpa' => 'required'
+        ])->validate();*/
+
         return redirect('/userlist');
     }
 
