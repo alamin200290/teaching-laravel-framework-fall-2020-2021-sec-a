@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class homeController extends Controller
 {
+
     function index(Request $req){
     	/*$data = ['id'=> 123, 'name'=> 'alamin'];
     	return view('home.index', $data);*/
@@ -23,14 +24,11 @@ class homeController extends Controller
     	$v->withName('alamin');
    		return $v;*/
 
-        if($req->session()->has('username')){
-            $id = 123;
-            $name = $req->session()->get('username');
-            return view('home.index', compact('id', 'name'));
-        }else{
-            $req->session()->flash('msg', 'invalid request...');
-            return redirect('/login');
-        }
+
+
+        $id = 123;
+        $name = $req->session()->get('username');
+        return view('home.index', compact('id', 'name'));
     	
     }
 

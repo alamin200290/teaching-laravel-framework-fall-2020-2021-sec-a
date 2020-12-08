@@ -21,16 +21,21 @@ Route::post('/login', 'loginController@verify');
 Route::get('/logout', 'logoutController@index');
 
 
-Route::get('/home', 'homeController@index');
-Route::get('/create', 'homeController@create');
-Route::post('/create', 'homeController@store');
+Route::group(['middleware'=>['sess']], function(){
 
-Route::get('/userlist', 'homeController@userlist');
-Route::get('/details/{id}', 'homeController@show');
+	Route::get('/home', 'homeController@index')->middleware('sess');
+	Route::get('/create', 'homeController@create');
+	Route::post('/create', 'homeController@store');
 
-Route::get('/edit/{id}', 'homeController@edit');
-Route::post('/edit/{id}', 'homeController@update');
+	//Route::get('/userlist', 'homeController@userlist');
+	Route::get('/userlist', ['uses'=> 'homeController@userlist']);
 
-Route::get('/delete/{id}', 'homeController@delete');
-Route::post('/delete/{id}', 'homeController@destroy');
+	Route::get('/details/{id}', 'homeController@show');
+	Route::get('/edit/{id}', 'homeController@edit');
+	Route::post('/edit/{id}', 'homeController@update');
+	Route::get('/delete/{id}', 'homeController@delete');
+	Route::post('/delete/{id}', 'homeController@destroy');
+});
+
+
 
