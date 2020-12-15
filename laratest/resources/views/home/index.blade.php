@@ -1,18 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Home Page</title>
-</head>
-<body>
+@extends('layout/navbar')
 
-	<h1>Welcome home</h1>
-	<a href="/create">Create New User</a> |
-	<a href="/userlist">View User List</a> |
-	<a href="/logout">logout</a>
+@section('head')
+	Welcome home
+@endsection
 
+@section('content')
 	<br>
 	<br>
 	ID: {{$id}} <br>
 	Name: {{$name}}
-</body>
-</html>
+@endsection
+
+@section('title')
+Home Page
+@endsection

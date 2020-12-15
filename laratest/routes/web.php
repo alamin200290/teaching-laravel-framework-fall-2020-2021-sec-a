@@ -37,8 +37,10 @@ Route::group(['middleware'=>['sess']], function(){
 		Route::get('/delete/{id}', 'homeController@delete');
 		Route::post('/delete/{id}', 'homeController@destroy');
 	});
+
 	
 });
 
+//Route::resource('/product', 'ProductController');
 
 
