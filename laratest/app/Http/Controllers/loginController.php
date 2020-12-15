@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\User;
 
 class loginController extends Controller
 {
@@ -24,7 +26,16 @@ class loginController extends Controller
 		//$req->session()->reflash();
 		//$data =$req->session()->pull('name');
 
-    	if($req->username == $req->password){
+         $user = DB::table('user_table')
+                    ->where('username', $req->username)
+                    ->where('password', $req->password)
+                    ->first();
+
+        /*$user = User::where('username', $req->username)
+                    ->where('password', $req->password)
+                    ->first();*/
+
+    	if(count($user) > 0){
     		$req->session()->put('username', $req->username);
             $req->session()->put('type', $req->username);
             

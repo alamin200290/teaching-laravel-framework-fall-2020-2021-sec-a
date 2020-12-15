@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use Validator;
+use App\User;
 
 class homeController extends Controller
 {
@@ -69,27 +70,64 @@ class homeController extends Controller
             'cgpa' => 'required'
         ])->validate();*/
 
-        return redirect('/userlist');
+
+        if($req->hasFile('myimg')){
+
+        	$file = $req->file('myimg');
+        	/*echo "File Name: ".$file->getClientOriginalName()."<br/>";
+        	echo "File Extension: ".$file->getClientOriginalExtension()."<br/>";
+        	echo "File Size: ".$file->getSize();*/
+
+        	if($file->move('upload', $file->getClientOriginalName())){
+        		
+                $user = new User();
+                $user->username     = $req->username;
+                $user->password     = $req->password;
+                $user->name         = $req->name;
+                $user->dept         = $req->dept;
+                $user->cgpa         = $req->cgpa;
+                $user->type         = $req->type;
+                $user->profile_img  = $file->getClientOriginalName();
+
+                if($user->save()){
+                    return redirect()->route('home.userlist');
+                }else{
+                    return back();
+                }
+
+        	}else{
+        		return back();
+        	}
+        }
     }
 
     public function userlist(){
-        $users  = $this->getUserlist();
+        $users  = User::all();
         return view('home.userlist')->with('users', $users);
     }
 
     public function show($id){
         //$user = $id
-        //return view('home.show')->with('user', $user);
+    	$user = ['id'=> 1, 'name'=>'xyz', 'email'=>'xyz@aiub.edu', 'cgpa'=>4, 'img'=>'abc.png'];
+        return view('home.show', $user);
     }
 
     public function edit($id){
-        //$user = $id
-        //return view('home.show')->with('user', $user);
+        $user = User::find($id);       
+        return view('home.edit', $user);
     }
 
-    public function update($id){
-        //$user = $id
-        //return view('home.show')->with('user', $user);
+    public function update($id, Request $req){
+
+        $user = User::find($id); 
+        $user->username     = $req->username;
+        $user->password     = $req->password;
+        $user->name         = $req->name;
+        $user->dept         = $req->dept;
+        $user->type         = $req->type;
+        $user->save();
+
+        return redirect()->route('home.userlist');
     }
 
     public function delete($id){
